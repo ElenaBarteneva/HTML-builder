@@ -23,4 +23,11 @@ function requestInput() {
   });
 }
 
+// process.on('SIGINT', () => {
+//   console.log('Goodbye!');
+// rl.close();
+// writeStream.end();
+// process.exit();
+// });
+
 requestInput();

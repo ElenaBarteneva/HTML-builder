@@ -7,9 +7,21 @@ async function copyDir() {
 
   try {
     await fs.mkdir(dirCopy, { recursive: true });
-    const files = await fs.readdir(dirOriginal, { withFileTypes: true });
+    const filesOriginal = await fs.readdir(dirOriginal, {
+      withFileTypes: true,
+    });
+    const filesCopy = await fs.readdir(dirCopy, { withFileTypes: true });
 
-    for (let file of files) {
+    const filesOriginalNames = filesOriginal.map((file) => file.name);
+    const filesCopyNames = filesCopy.map((file) => file.name);
+
+    for (let file of filesCopyNames) {
+      if (!filesOriginalNames.includes(file)) {
+        const fileToDelete = path.join(dirCopy, file);
+        await fs.unlink(fileToDelete);
+      }
+    }
+    for (let file of filesOriginal) {
       const originalFilePath = path.join(dirOriginal, file.name);
       const copyFilePath = path.join(dirCopy, file.name);
 
